@@ -39,25 +39,3 @@ export const publishAlert = functions.firestore.document('alerts/{alertId}')
 
         return 0;
     });
-
-export const publishTemperature = functions.firestore.document('temperatures/current')
-    .onUpdate((change, context) => {
-        if(!change.after.exists) return 1;
-
-        const message = new Buffer(JSON.stringify(change.after.data()));
-
-        console.log(`Publishing temp message: ${message}`);
-
-        pubsubClient
-            .topic('temperatures')
-            .publisher()
-            .publish(message)
-            .then(messageId => {
-                console.log(`Message ${messageId} published.`);
-            })
-            .catch(err => {
-                console.error('Unable to publish temp to pub/sub:', err);
-            });
-
-        return 0;
-});
