@@ -46,7 +46,7 @@ export const publishTemperature = functions.firestore.document('temperatures/cur
 
         const message = new Buffer(JSON.stringify(change.after.data()));
 
-        console.log(`Publishing temp message: message`);
+        console.log(`Publishing temp message: ${message}`);
 
         pubsubClient
             .topic('temperatures')
